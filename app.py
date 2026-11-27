@@ -300,6 +300,64 @@ def launchpad():
             }
     return render_template("launchpad.html", plan=plan)
 
+
+# --------------------------------------------------
+# CAREER LAB: LOCAL-FIRST SMART CAREER TOOLS
+# --------------------------------------------------
+
+@app.route("/career-lab", methods=["GET", "POST"])
+@login_required
+def career_lab():
+    result = None
+    action = request.form.get("action", "ats") if request.method == "POST" else None
+
+    if request.method == "POST":
+        if action == "ats":
+            resume_text = request.form.get("resume_text", "").strip()[:12000]
+            target_role = request.form.get("target_role", "").strip()[:100]
+            if len(resume_text) < 40:
+                flash("Paste at least a few lines of your resume to analyse it.")
+            else:
+                role_terms = {
+                    "software developer": ["python", "java", "javascript", "sql", "git", "api", "testing", "projects"],
+                    "data analyst": ["excel", "sql", "python", "power bi", "tableau", "statistics", "dashboard", "projects"],
+                    "web developer": ["html", "css", "javascript", "react", "api", "git", "responsive", "projects"],
+                    "general internship": ["communication", "teamwork", "projects", "problem solving", "education", "skills"]
+                }
+                role_key = target_role.lower()
+                terms = role_terms.get(role_key, role_terms["general internship"])
+                text_lower = resume_text.lower()
+                found = [term for term in terms if term in text_lower]
+                missing = [term for term in terms if term not in text_lower]
+                score = min(100, round((len(found) / len(terms)) * 75 + min(25, len(resume_text.split()) / 20)))
+                suggestions = []
+                if "projects" not in text_lower:
+                    suggestions.append("Add 1–2 projects with your role, tools used and measurable outcome.")
+                if not any(word in text_lower for word in ("built", "developed", "created", "implemented")):
+                    suggestions.append("Use action verbs such as built, developed, implemented and improved.")
+                if not any(word in text_lower for word in ("%", "users", "minutes", "records", "accuracy")):
+                    suggestions.append("Add honest numbers or outcomes where you can support them.")
+                if not any(word in text_lower for word in ("github", "linkedin", "portfolio")):
+                    suggestions.append("Include a clickable GitHub, LinkedIn or portfolio link.")
+                if not suggestions:
+                    suggestions.append("Good structure signals found. Tailor the wording to the exact job description.")
+                result = {"kind": "ats", "score": score, "found": found, "missing": missing,
+                          "suggestions": suggestions, "role": target_role or "General internship",
+                          "note": "This is a local keyword and structure check, not a guarantee of an employer's ATS score."}
+
+        elif action == "interview":
+            role = request.form.get("interview_role", "Software Developer").strip()[:100]
+            bank = {
+                "software": ["Explain a project you built and the problem it solves.", "How would you debug an API that suddenly returns a 500 error?", "What is the difference between a list and a tuple in Python?", "How do you use Git when working with a team?"],
+                "data": ["How would you handle missing values in a dataset?", "Explain a project where you used data to answer a question.", "What is the difference between INNER JOIN and LEFT JOIN?", "How would you explain a chart to a non-technical stakeholder?"],
+                "general": ["Tell me about yourself and the kind of role you are seeking.", "Describe a challenge you faced and how you handled it.", "What is one skill you are actively improving?", "Why should a team choose you for this opportunity?"]
+            }
+            key = "data" if any(x in role.lower() for x in ("data", "analyst")) else ("software" if any(x in role.lower() for x in ("software", "developer", "engineer", "web")) else "general")
+            result = {"kind": "interview", "role": role, "questions": bank[key],
+                      "tip": "Answer using STAR: Situation, Task, Action and Result. Keep each answer specific and honest."}
+
+    return render_template("career_lab.html", result=result)
+
 # --------------------------------------------------
 # CHATBOT
 # --------------------------------------------------
