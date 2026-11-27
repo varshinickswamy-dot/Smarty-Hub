@@ -247,6 +247,59 @@ def career():
 
     return render_template("career.html")
 
+
+# --------------------------------------------------
+# LAUNCHPAD: SKILL-TO-OPPORTUNITY STUDIO
+# --------------------------------------------------
+
+@app.route("/launchpad", methods=["GET", "POST"])
+@login_required
+def launchpad():
+    plan = None
+    if request.method == "POST":
+        skills = request.form.get("skills", "").strip()[:500]
+        interests = request.form.get("interests", "").strip()[:300]
+        goal = request.form.get("goal", "").strip()[:300]
+        if not skills or not interests or not goal:
+            flash("Please complete all three fields to build your LaunchPad plan.")
+        else:
+            skill_list = [item.strip() for item in skills.replace("\n", ",").split(",") if item.strip()]
+            focus = interests.lower()
+            if any(word in focus for word in ("ai", "machine learning", "data")):
+                track = "Build an intelligent solution"
+                project = "Create a small, explainable AI assistant that solves one real student or community problem."
+                proof = ["Define one real problem and identify who experiences it",
+                         "Prepare a small, clearly documented dataset",
+                         "Build a working prototype and test it with 3 sample cases",
+                         "Publish a README with screenshots, limitations and next steps"]
+            elif any(word in focus for word in ("web", "design", "frontend", "backend", "app")):
+                track = "Build a useful digital product"
+                project = "Design and build a responsive micro-tool that removes one everyday friction point."
+                proof = ["Interview 2 potential users about the problem",
+                         "Sketch the main user journey and 3 core screens",
+                         "Build a responsive working prototype",
+                         "Publish a demo, screenshots and a short case study"]
+            elif any(word in focus for word in ("business", "entrepreneur", "marketing", "finance")):
+                track = "Validate a practical business idea"
+                project = "Create a lean launch experiment for a student-focused product or service."
+                proof = ["Describe the target user and their unmet need",
+                         "Compare 3 existing alternatives",
+                         "Create a one-page offer and simple cost model",
+                         "Collect feedback from 5 people and summarize what changed"]
+            else:
+                track = "Turn your interest into visible proof"
+                project = "Create a compact portfolio project that demonstrates your interest through a real outcome."
+                proof = ["Choose one specific problem related to your interest",
+                         "Research 3 examples and note what can be improved",
+                         "Create a small working or presentable solution",
+                         "Document the result, your contribution and lessons learned"]
+            plan = {
+                "track": track, "project": project, "skills": skill_list[:12],
+                "proof": proof, "goal": goal,
+                "next_step": "Start with the first proof task today. Keep the scope small enough to finish."
+            }
+    return render_template("launchpad.html", plan=plan)
+
 # --------------------------------------------------
 # CHATBOT
 # --------------------------------------------------
