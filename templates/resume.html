@@ -231,7 +231,21 @@ resumeForm.addEventListener("submit", function(event) {
     generateButton.setAttribute("aria-busy", "true");
     generateButton.textContent = "Generating PDF…";
     downloadStatus.textContent = "Please wait. Creating your resume PDF…";
+
+    // Some WebViews keep the page open after handing the attachment to
+    // Android DownloadManager. Restore the button so another resume can be made.
+    window.setTimeout(resetResumeButton, 15000);
 });
+
+function resetResumeButton() {
+    generateButton.disabled = false;
+    generateButton.removeAttribute("aria-busy");
+    generateButton.textContent = "Generate Resume PDF";
+}
+document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) resetResumeButton();
+});
+window.addEventListener("focus", resetResumeButton);
 </script>
 
 </body>
