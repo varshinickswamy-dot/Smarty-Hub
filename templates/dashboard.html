@@ -173,6 +173,95 @@ a{
     }
 }
 
+/* MOBILE DASHBOARD FIX — scoped to this page only */
+@media (max-width: 575px){
+    body{
+        overflow-x:hidden;
+        padding-top:env(safe-area-inset-top, 0px);
+    }
+    body > nav.navbar{
+        position:relative !important;
+        top:auto !important;
+        left:auto !important;
+        right:auto !important;
+        width:100%;
+        min-height:60px;
+        height:auto;
+        flex-wrap:nowrap !important;
+        padding:8px 12px !important;
+        gap:8px;
+        z-index:5;
+    }
+    body > nav.navbar .navbar-brand{
+        display:block;
+        flex:1 1 auto;
+        min-width:0;
+        font-size:clamp(17px, 5vw, 21px) !important;
+        line-height:1.2;
+        white-space:normal;
+        overflow-wrap:anywhere;
+    }
+    body > nav.navbar .btn{
+        flex:0 0 auto;
+        min-height:44px;
+        padding:9px 12px !important;
+        font-size:14px !important;
+        white-space:nowrap;
+    }
+    body > .container{
+        padding-top:4px;
+        padding-bottom:24px;
+    }
+    body > .container > h2{
+        margin-top:18px !important;
+        margin-bottom:18px !important;
+        font-size:clamp(22px, 6vw, 28px) !important;
+        line-height:1.2;
+    }
+    .dashboard-grid{
+        margin-top:12px !important;
+        grid-template-columns:minmax(0,1fr) !important;
+        gap:14px !important;
+    }
+    .dashboard-grid > a{
+        display:block;
+        width:100%;
+        min-height:0;
+        -webkit-tap-highlight-color:transparent;
+    }
+    .dashboard-grid .card-box{
+        min-height:132px !important;
+        height:auto;
+        padding:18px 14px !important;
+        gap:2px;
+        border-radius:20px !important;
+        font-size:18px !important;
+        line-height:1.3;
+        box-shadow:0 8px 22px rgba(0,0,0,.18) !important;
+        transform:none !important;
+        cursor:pointer;
+    }
+    .dashboard-grid .card-box .icon{
+        font-size:36px !important;
+        line-height:1.15;
+        margin-bottom:7px !important;
+    }
+    .dashboard-grid .card-box small{
+        display:block;
+        margin-top:6px !important;
+        font-size:14px !important;
+        line-height:1.35;
+    }
+    .dashboard-grid > a:active .card-box{
+        border-color:#61d8e2 !important;
+        background:#172a3e !important;
+    }
+}
+@media (max-width: 360px){
+    body > nav.navbar .navbar-brand{font-size:16px !important}
+    body > nav.navbar .btn{padding:8px 9px !important;font-size:13px !important}
+}
+
 </style>
 </head>
 
