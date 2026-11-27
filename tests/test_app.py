@@ -106,6 +106,28 @@ class SmartyHubAppTests(unittest.TestCase):
         self.assertIn(b"Build an intelligent solution", response.data)
         self.assertIn(b"portfolio project", response.data.lower())
 
+
+    def test_career_lab_requires_login_and_supports_resume_and_interview(self):
+        self.assertEqual(self.client.get("/career-lab").status_code, 302)
+        self.register_and_login()
+        ats = self.client.post(
+            "/career-lab",
+            data={
+                "action": "ats",
+                "target_role": "Software Developer",
+                "resume_text": "Built Python and SQL projects with Git. Developed APIs and testing workflows.",
+            },
+        )
+        self.assertEqual(ats.status_code, 200)
+        self.assertIn(b"Your resume snapshot", ats.data)
+        interview = self.client.post(
+            "/career-lab",
+            data={"action": "interview", "interview_role": "Software Developer"},
+        )
+        self.assertEqual(interview.status_code, 200)
+        self.assertIn(b"Practice round", interview.data)
+        self.assertIn(b"debug an API", interview.data)
+
     def test_timetable_and_admin_pages_render_for_admin(self):
         self.register_and_login()
         with app.app_context():
