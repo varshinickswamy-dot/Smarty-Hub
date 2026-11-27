@@ -33,3 +33,198 @@ a:hover{color:#fff}
 .reset{background:#b85f6a!important;color:white!important}
 .result-box{border-left:4px solid var(--sh-primary)!important}
 @media(max-width:575px){.card{padding:20px!important}.container{max-width:100%}.dashboard-grid{margin-top:24px!important}}
+
+
+/* ==========================================================
+   SMARTY HUB — SHARED RESPONSIVE LAYOUT
+   Applies across dashboard, LaunchPad, Career Lab, forms,
+   chatbot, resume builder, admin and study timer.
+   ========================================================== */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:clip;
+}
+body{
+  min-width:320px;
+  overflow-wrap:anywhere;
+}
+img,video,canvas,svg,iframe{
+  max-width:100%;
+}
+.container,.container-fluid,.wrap,main,section,.row,[class*="col-"]{
+  min-width:0;
+}
+.container,.container-fluid{
+  max-width:100%;
+}
+.card,.panel,.hero,.result-box,.detail-box,.timer-card,.chat-area{
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+form,.form-group,.input-group{
+  min-width:0;
+  max-width:100%;
+}
+.form-control,.form-select,select,input,textarea,button{
+  max-width:100%;
+}
+textarea{
+  overflow-wrap:anywhere;
+}
+.table-responsive{
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+pre,code{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.navbar{
+  position:relative;
+  z-index:20;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+  max-width:100%;
+}
+.navbar-brand{
+  min-width:0;
+  max-width:100%;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.navbar .btn{
+  flex:0 0 auto;
+  min-height:44px;
+}
+.header,.admin-header,.d-flex.justify-content-between{
+  min-width:0;
+  flex-wrap:wrap;
+}
+.header > *, .admin-header > *{
+  min-width:0;
+}
+button,a.btn,input[type="submit"]{
+  touch-action:manipulation;
+}
+:focus-visible{
+  scroll-margin-top:12px;
+}
+@media (max-width:767px){
+  .container{
+    width:100%;
+    padding-left:max(14px,env(safe-area-inset-left)) !important;
+    padding-right:max(14px,env(safe-area-inset-right)) !important;
+  }
+  .container.mt-5{
+    margin-top:1.25rem !important;
+  }
+  .navbar{
+    padding-left:max(12px,env(safe-area-inset-left)) !important;
+    padding-right:max(12px,env(safe-area-inset-right)) !important;
+  }
+  .navbar-brand{
+    flex:1 1 160px;
+    font-size:clamp(17px,4.5vw,22px) !important;
+    line-height:1.2;
+  }
+  .navbar .btn{
+    font-size:14px;
+    padding:9px 12px;
+  }
+  .header,.admin-header{
+    align-items:center !important;
+    gap:10px;
+    margin-bottom:18px !important;
+  }
+  .header h1,.header h2,.admin-header h1,.admin-header h2{
+    flex:1 1 180px;
+    font-size:clamp(20px,5.5vw,27px) !important;
+    line-height:1.2;
+    margin-bottom:0;
+  }
+  .card,.panel,.timer-card{
+    padding:clamp(16px,4.5vw,22px) !important;
+    border-radius:20px !important;
+  }
+  .hero{
+    padding:clamp(18px,5vw,26px) !important;
+    border-radius:20px !important;
+  }
+  .hero h1,.hero .display-6{
+    font-size:clamp(27px,7vw,38px) !important;
+    line-height:1.12;
+  }
+  h1{font-size:clamp(25px,6.5vw,34px)}
+  h2{font-size:clamp(21px,5.7vw,29px)}
+  h3{font-size:clamp(18px,5vw,24px)}
+  p,label,li{overflow-wrap:anywhere}
+  .row{
+    --bs-gutter-x:1rem;
+    --bs-gutter-y:1rem;
+  }
+  .form-control,.form-select,select,input,textarea{
+    width:100%;
+    min-width:0;
+    font-size:16px !important;
+  }
+  .btn,.btn-primary,.btn-success,.generate-btn{
+    min-height:46px;
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+  .dashboard-grid{
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+  .dashboard-grid > a,.dashboard-grid .card-box{
+    min-width:0;
+    max-width:100%;
+  }
+  .chat-area{
+    height:min(55dvh,460px);
+    min-height:220px;
+    padding:14px !important;
+  }
+  .user-msg,.bot-msg{
+    max-width:92%;
+  }
+  .timer-card{
+    width:100%;
+    max-width:480px;
+  }
+  .table{
+    white-space:nowrap;
+  }
+  .score{
+    font-size:clamp(38px,11vw,52px) !important;
+  }
+}
+@media (max-width:380px){
+  .navbar{
+    gap:7px;
+  }
+  .navbar-brand{
+    flex-basis:135px;
+    font-size:16px !important;
+  }
+  .navbar .btn{
+    padding:8px 9px;
+    font-size:13px;
+  }
+  .container{
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  .card,.panel,.timer-card{
+    padding:15px !important;
+  }
+}
+@media (hover:none) and (pointer:coarse){
+  .card-box:hover,.control-btn:hover{
+    transform:none !important;
+  }
+}
