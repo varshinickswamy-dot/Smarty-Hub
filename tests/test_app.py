@@ -73,9 +73,11 @@ class SmartyHubAppTests(unittest.TestCase):
                 "summary": "Builds <useful> things & learns.",
                 "skills": "Python, SQL",
             },
+            follow_redirects=True,
         )
 
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.request.path.startswith("/resume/download/"))
         self.assertEqual(response.mimetype, "application/pdf")
         self.assertIn("attachment", response.headers["Content-Disposition"])
         self.assertIn("SmartyHub_Resume_1.pdf", response.headers["Content-Disposition"])
