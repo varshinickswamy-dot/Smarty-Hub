@@ -88,6 +88,24 @@ class SmartyHubAppTests(unittest.TestCase):
         with app.app_context():
             self.assertEqual(User.query.count(), 1)
 
+
+    def test_launchpad_requires_login_and_builds_action_plan(self):
+        response = self.client.get("/launchpad")
+        self.assertEqual(response.status_code, 302)
+        self.register_and_login()
+        response = self.client.post(
+            "/launchpad",
+            data={
+                "skills": "Python, SQL, communication",
+                "interests": "AI and machine learning",
+                "goal": "Build a portfolio project",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Your 4-step proof sprint", response.data)
+        self.assertIn(b"Build an intelligent solution", response.data)
+        self.assertIn(b"portfolio project", response.data.lower())
+
     def test_timetable_and_admin_pages_render_for_admin(self):
         self.register_and_login()
         with app.app_context():
