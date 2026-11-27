@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template, request, redirect, jsonify, flash, send_file
+from flask import Flask, abort, render_template, request, redirect, jsonify, flash, send_file, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -498,15 +498,32 @@ def resume():
         # ---------------- BUILD PDF ----------------
         doc.build(elements)
 
-        return send_file(
-            pdf_path,
-            mimetype="application/pdf",
-            as_attachment=True,
-            download_name=f"SmartyHub_Resume_{r.id}.pdf",
-            max_age=0
-        )
+        # Redirect to a dedicated GET endpoint so Android WebView can hand
+        # a normal attachment URL to its native DownloadManager.
+        return redirect(url_for("download_resume", resume_id=r.id))
 
     return render_template("resume.html")
+
+
+@app.route("/resume/download/<int:resume_id>", methods=["GET"])
+@login_required
+def download_resume(resume_id):
+    resume_record = Resume.query.filter_by(
+        id=resume_id,
+        user_id=current_user.id
+    ).first_or_404()
+
+    pdf_path = os.path.join(REPORT_FOLDER, f"resume_{resume_record.id}.pdf")
+    if not os.path.isfile(pdf_path):
+        abort(404, description="Resume PDF not found. Please generate it again.")
+
+    return send_file(
+        pdf_path,
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name=f"SmartyHub_Resume_{resume_record.id}.pdf",
+        max_age=0
+    )
 # --------------------------------------------------
 # TIMETABLE
 # --------------------------------------------------
