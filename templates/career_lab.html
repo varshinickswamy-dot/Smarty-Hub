@@ -11,6 +11,18 @@
 .eyebrow{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sh-accent);font-weight:800}
 .score{font-size:3.2rem;font-weight:850;color:var(--sh-accent);line-height:1}.pill{display:inline-block;padding:6px 10px;margin:4px;border-radius:999px;background:var(--sh-surface-2);border:1px solid var(--sh-border);color:var(--sh-muted)}
 .question{padding:14px 0;border-bottom:1px solid var(--sh-border)}.question:last-child{border:0}
+
+/* Keep the mobile header controls lower and easier to reach, matching dashboard spacing */
+@media (max-width: 575px){
+  body > nav.navbar{
+    box-sizing:border-box;
+    height:196px;
+    min-height:196px;
+    padding-top:78px !important;
+    padding-bottom:16px !important;
+    align-items:center;
+  }
+}
 </style></head><body>
 <nav class="navbar navbar-dark px-3 px-sm-4"><a class="navbar-brand" href="/dashboard">✦ Smarty Hub</a><a href="/dashboard" class="btn btn-outline-info">⬅ Back</a></nav>
 <main class="wrap">
