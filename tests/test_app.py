@@ -73,12 +73,14 @@ class SmartyHubAppTests(unittest.TestCase):
                 "summary": "Builds <useful> things & learns.",
                 "skills": "Python, SQL",
             },
-            follow_redirects=True,
         )
 
+        self.assertEqual(response.status_code, 303)
+        self.assertIn("/resume/download/1", response.headers["Location"])
+        response = self.client.get(response.headers["Location"])
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.request.path.startswith("/resume/download/"))
         self.assertEqual(response.mimetype, "application/pdf")
+        self.assertIn("no-store", response.headers["Cache-Control"])
         self.assertIn("attachment", response.headers["Content-Disposition"])
         self.assertIn("SmartyHub_Resume_1.pdf", response.headers["Content-Disposition"])
         self.assertTrue(response.data.startswith(b"%PDF"))
