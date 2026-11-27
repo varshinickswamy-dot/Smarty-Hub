@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Panel</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet">
+
+<style>
+body{
+    background:linear-gradient(135deg,#020617,#0f172a);
+    color:white;
+    min-height:100vh;
+}
+.card{
+    background:#020617;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 0 40px rgba(56,189,248,0.7);
+}
+h2{
+    color:#38bdf8;
+    font-weight:700;
+}
+.table{
+    color:white;
+    min-width:520px;
+    margin-bottom:0;
+}
+th{
+    color:#7dd3fc;
+}
+.table-responsive{
+    border-radius:8px;
+    -webkit-overflow-scrolling:touch;
+}
+@media (max-width:575px){
+    .card{padding:16px;}
+    .admin-header{gap:12px;align-items:flex-start;}
+    .admin-header h2{font-size:1.4rem;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<div class="admin-header d-flex justify-content-between mb-4">
+<h2>👑 Admin Panel</h2>
+<a href="/dashboard" class="btn btn-outline-info">⬅ Back</a>
+</div>
+
+<div class="card">
+
+<div class="table-responsive" role="region" aria-label="User accounts" tabindex="0">
+<table class="table table-dark table-bordered text-center">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+</tr>
+</thead>
+
+<tbody>
+{% for u in users %}
+<tr>
+<td>{{u.id}}</td>
+<td>{{u.name}}</td>
+<td>{{u.email}}</td>
+<td>{{u.role}}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

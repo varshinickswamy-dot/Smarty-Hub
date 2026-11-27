@@ -1,0 +1,75 @@
+html{
+    width:100%;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+}
+
+*,*::before,*::after{
+    box-sizing:border-box;
+}
+
+body{
+    min-width:320px;
+}
+
+img,svg,video,canvas{
+    max-width:100%;
+}
+
+input,select,textarea{
+    max-width:100%;
+    font-size:16px;
+}
+
+textarea{
+    resize:vertical;
+}
+
+a,button,input,select,textarea{
+    touch-action:manipulation;
+}
+
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible{
+    outline:3px solid #38bdf8;
+    outline-offset:2px;
+}
+
+a.btn,button,input[type="submit"]{
+    min-height:44px;
+}
+
+@media (max-width:575px){
+    input:not([type="checkbox"]):not([type="radio"]),
+    select,textarea{
+        min-height:44px;
+    }
+
+    input[type="checkbox"],input[type="radio"]{
+        width:20px;
+        height:20px;
+    }
+
+    .container{
+        padding-left:max(12px, env(safe-area-inset-left));
+        padding-right:max(12px, env(safe-area-inset-right));
+    }
+
+    .container.mt-5{
+        margin-top:1.25rem !important;
+    }
+
+    h1,h2,h3,h4,h5,h6{
+        line-height:1.2;
+        overflow-wrap:anywhere;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+        scroll-behavior:auto !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+    }
+}
