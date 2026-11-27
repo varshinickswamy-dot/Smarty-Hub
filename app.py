@@ -47,7 +47,18 @@ if os.environ.get("APP_ENV", "development").lower() == "production" and not secr
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["SECRET_KEY"] = secret_key or secrets.token_hex(32)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL") or "sqlite:///" + DB_PATH
+database_url = os.environ.get("DATABASE_URL") or "sqlite:///" + DB_PATH
+
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace(
+        "postgres://", "postgresql+psycopg://", 1
+    )
+elif database_url.startswith("postgresql://"):
+    database_url = database_url.replace(
+        "postgresql://", "postgresql+psycopg://", 1
+    )
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -65,7 +76,7 @@ with app.app_context():
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "/"
+login_manager.login_view = "login"
 
 @login_manager.user_loader
 def load_user(user_id):
