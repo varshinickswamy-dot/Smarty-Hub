@@ -500,7 +500,7 @@ def resume():
 
         # Redirect to a dedicated GET endpoint so Android WebView can hand
         # a normal attachment URL to its native DownloadManager.
-        return redirect(url_for("download_resume", resume_id=r.id))
+        return redirect(url_for("download_resume", resume_id=r.id), code=303)
 
     return render_template("resume.html")
 
@@ -517,13 +517,18 @@ def download_resume(resume_id):
     if not os.path.isfile(pdf_path):
         abort(404, description="Resume PDF not found. Please generate it again.")
 
-    return send_file(
+    response = send_file(
         pdf_path,
         mimetype="application/pdf",
         as_attachment=True,
         download_name=f"SmartyHub_Resume_{resume_record.id}.pdf",
-        max_age=0
+        max_age=0,
+        conditional=False
     )
+    # Explicit download headers help Android WebView's native download manager.
+    response.headers["Cache-Control"] = "private, no-store, max-age=0"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
 # --------------------------------------------------
 # TIMETABLE
 # --------------------------------------------------
